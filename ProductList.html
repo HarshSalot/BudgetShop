@@ -1,0 +1,177 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+				
+</head>		
+		<body>
+		<h2>
+		<center>
+			Product
+		</center></h2>
+		
+		<div role="main" class="ui-content">
+			<img id="image" src="./image/iphone1.jpg" alt="Mountain View" width="500" height="377">
+			
+			<p>
+				
+		  <h3 align="center">Name: <var id="usrname">name</var></h3>
+         
+          <h3>Address: <var id="address">address</var></h3>
+           <h3>Phone: <var id="phone">phone</var></h3>
+		   </p>
+
+		</div>
+		
+			<div data-theme="c" role="main" class="ui-content">
+		<ul id="productlist" data-filter="true" data-autodividers="true" data-inset="true" data-role="listview">
+		
+			           </ul>
+	</div>
+		
+		 <div data-theme="a" data-role="footer">
+		<div data-role="navbar">
+			<ul id="foter">
+				 <li><a href="ProductList.html"  data-icon="bars" class="ui-btn-active">Product List</a></li>
+				 <li><a href="BusinessHrs.html" data-icon="clock">Business Hours</a></li>
+				 
+		    </ul>
+		    </div> <!-- /navbar -->
+	    </div>
+
+		
+<script>
+				//alert();
+	
+	
+				
+  var do_on_load = function() {
+  	setTimeout(function() {
+					//alert();
+					
+		var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+					var url = window.location.href;
+			id=url.split("=")[1];
+			//alert(id);
+			localStorage.setItem("v_hrs",id);
+			
+			  db.transaction(function  (tx) {
+
+	tx.executeSql('SELECT * FROM Vendor where id=?',   [id], function(tx, results){
+		//alert(id);
+	//	var len  =  results.rows.length;
+		var names=(results.rows.item(0).name);
+		var addresss=(results.rows.item(0).address);
+		
+			var phones= (results.rows.item(0).phone);
+			var images = (results.rows.item(0).image);
+			var id = (results.rows.item(0).id);
+			
+			//alert(names);
+			
+			$("#image").attr("src",images);
+			
+			//Set values in text
+			$("#usrname").text(names);
+			
+			
+			$("#address").text(addresss);
+			$("#phone").text(phones);
+	
+		
+	}, null);
+	});
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+		db.transaction(function(tx)
+			  {
+			  	tx.executeSql('CREATE TABLE IF NOT EXISTS Product(id INTEGER PRIMARY KEY,name,category, description, price, image, qantity, v_id)');
+			  	
+
+			  });
+			  alert(id);
+			  			  db.transaction(function  (tx) {
+ tx.executeSql('SELECT * FROM Product Where v_id= ? AND qantity!=0',   [id], updateProductList);
+	tx.executeSql('SELECT * FROM Product Where v_id= ? AND qantity!=0',   [id], function(tx, results){
+		var len  =  results.rows.length;
+		
+	for (i=0; i<len ;i++)
+		{
+			
+	        var id = (results.rows.item(i).id);
+			var names=(results.rows.item(i).name);
+			var category=(results.rows.item(i).category);
+			var description=(results.rows.item(i).description);
+			var price = (results.rows.item(i).price);
+			var image = (results.rows.item(i).image);
+			var quantity = (results.rows.item(i).quantity);
+			var v_id = (results.rows.item(i).v_id);
+			
+
+	
+	
+		};
+		
+	}, null);
+	});
+
+
+    }, 2000);
+				};
+				
+				
+				////////////////////////////////////////////////////////////////////////////////////////////////////////
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  	
+function updateProductList(transaction, results) {
+    //initialise the listitems variable
+    var listitems = "";
+    //get the car list holder ul
+    var listholder = document.getElementById("productlist");
+
+    //clear cars list ul
+    listholder.innerHTML = "";
+
+    var i;
+    //Iterate through the results
+    for (i = 0; i < results.rows.length; i++) {
+        //Get the current row
+        var row = results.rows.item(i);
+      //  listholder.innerHTML += "<li>"+  + "  "  + row.name+ " <br> " + row.address+ " <br>" +row.pincode+ " <br>" +row. phone+ " <br>"+" <br> " + " </li> "   ;
+
+    //$("#vendorlist").append($("<li><a href='" + "http://www.desicomments.com/wp-content/uploads/2017/02/Welcome-Image-1.png"+ "'>" + row.address  + "</a></li>"));
+    $("#productlist").append($("<li>  <a id='list_"+row.id+"' href='" + "ProductDetail.html?id="+row.id+"'>"+" <img src="+row.image+">"+"<h3>"+row.name+"<h3>"+ row.category + " <br> " + row.price+ " <br> " + row.qantity+ " <br> " + row.v_id+ "</a> </li>"));
+   // var rowa=row.name;
+  //  (localStorage.setItem("nam", rowa));
+    //var mySelectValue = document.getElementById(w).value;
+
+      // Save the name in localStorage.
+      //localStorage.setItem('mySelectValue', mySelectValue);
+   //   function callMe(row){
+	//localStorage.setItem("nam",row.options[row.name(i)].value);
+	
+//}
+
+}
+
+$('#productlist').listview('refresh');
+
+
+
+}
+			
+$(document).ready(do_on_load);
+$(window).bind('page:change', do_on_load);
+		</script>
+		
+	</body>
+	
+
+
+	
+</html>
+

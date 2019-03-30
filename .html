@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+       <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+       <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+       
+<style>
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	width: 96%;                         /* changed from 990 pixels */
+	max-width: 1200px;                  /* maximum width of page */
+	background-color: white;
+	margin: 15px auto;
+	padding: 15px 0;
+	
+}
+article {
+	width: 54.0404%;                         /* 535 / 990 */
+	float: left;
+	margin-left: 2.0202%;                    /* 20 / 990 */
+	padding: 1.5em 2.52525% 0 0;             /* 25 / 990 */
+
+}
+
+/* the styles for the sidebar */
+aside {
+	width: 35.35353%;                        /* 350 / 990 */
+	float: left;
+	padding: 2.0202%;                        /* 20 / 990 */
+	margin: 1.5em 2.0202% 0 0;               /* 20 / 990 */
+}
+
+ .button {
+    color: #4d4dff; 
+    margin: 4px 2px;
+    cursor: pointer;
+
+
+</style>
+</head>
+	
+<body>
+	    <h2><center>Profile</center></h2>
+        <div role="main" class="ui-content">
+	<p>
+          <h3>Name: <var id="usrname">name</var></h3>
+          <h3>Email: <var id="email">email</var></h3>
+           <h3>Password: <var id="password">password</var></h3>
+           <h3>Address: <var id="address">address</var></h3>
+            <h3>Phone: <var id="phone">phone</var></h3>
+          
+    </p>
+    <button id="EdtProfile">EditProfile</button>
+    </div>		
+       
+
+   	
+   	 <script>
+   	 
+   	 var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+   	 
+    var username=(localStorage.getItem("username"));
+	var password=(localStorage.getItem("password"));
+	var namess=(localStorage.getItem("name"));
+      
+        
+			  
+
+			  db.transaction(function  (tx) {
+
+	tx.executeSql('SELECT * FROM Register where email=(?) and password=(?)',   [username,password], function(tx, results){
+		var len  =  results.rows.length;
+		 if(len==1)
+                              {
+			
+			var names=(results.rows.item(0).name);
+			var emails=(results.rows.item(0).email);
+			var passwords=(results.rows.item(0).password);
+			var addresss = (results.rows.item(0).address);
+			var phones = (results.rows.item(0).phone);
+			
+      //Set values in text
+			$("#usrname").text(names);
+			$("#email").text(emails);
+			$("#password").text(passwords);
+			$("#address").text(addresss);
+			$("#phone").text(phones);
+			
+		};
+		
+	}, null);
+	
+	$("#EdtProfile").click(function() {
+                
+                 (localStorage.setItem("username", username));
+	             (localStorage.setItem("password", password));
+                 (localStorage.setItem("name", name));
+                	window.location.href = "EditProfile.html";
+                });
+	});
+		
+						
+
+	
+			
+	</script>
+	</body>
+</html>
+

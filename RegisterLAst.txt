@@ -1,0 +1,73 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+       <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+       <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	</head>
+	<body>
+		
+		<div data-role="page">
+			<div data-role="header">
+				<h1>Register</h1>
+		</div>
+		
+	    <div     role="main"                  class="ui-content">
+		<input type="text"          id="name"        placeholder="Name"/>
+		<input type="email"       id="email"        placeholder="Email Address"/>
+		<input type="password" id="password" placeholder="Password"/>
+		<input type="text"          id="address"    placeholder="Address"/>
+		<input type="number"    id="phone"      placeholder="Phone #"/>
+		
+		<button id="registerID" >Register</button>
+		<button id="loginID" >Login</button>
+		
+	</div>
+	
+	<script>
+	
+		var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+			db.transaction(function(tx)
+			  {
+			  	tx.executeSql('CREATE TABLE IF NOT EXISTS Register(id INTEGER PRIMARY KEY,name,email unique, password, address, phone)');
+			  });
+			  
+			
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 $(document).ready(function() {
+             
+                $("registerID").click(function() {
+
+                	///////////////////////////////////////////////////////
+                alert("Hi");		
+			  /*
+				var name=document.getElementById("name").value;
+				var email=document.getElementById("email").value;
+				var password=document.getElementById("password").value;
+				var address=document.getElementById("address").value;
+				var phone=document.getElementById("phone").value;
+				
+				if (name==""||email==""||password==""||address==""||phone=="") 
+				{
+					alert("Please Enter all required feild !!");	
+				}
+				else
+				{
+					
+					db.transaction(function(tx)
+						  {
+						  	tx.executeSql('INSERT INTO Register(name,email,password,address,phone) VALUES(?,?,?,?,?)',[name,email,password,address,phone]);
+						  	//alert("Register Success !!");
+						  });
+						  
+				} */
+					//////////////////////////////////////////////////////
+               });
+                 $("#loginID").click(function() {
+                	//alert("ALert");
+                	window.location.href = "Login.html";
+                });
+
+             });
+	</script>
+</body>	
+</html>

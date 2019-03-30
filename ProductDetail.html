@@ -1,0 +1,100 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+				
+</head>		
+		<body>
+		<h2>
+		<center>
+			Product
+		</center></h2>
+		
+		<div role="main" class="ui-content">
+			<img id="image" src="./image/iphone1.jpg" alt="Mountain View" width="500" height="377">
+			
+		<p>
+				
+		  <h3 align="center">Name: <var id="nme">name</var></h3>
+         <h3>Description:<var id="description">description</var></h3>
+          <h3>Price: <var id="price">price</var></h3>
+           <h3>Quantity: <var id="qantity">qantity</var></h3>
+		   </p>
+        <button id="cart" >Add Cart</button>
+		
+	
+
+		
+<script>
+				//alert();
+			var pid;	
+  var do_on_load = function() {
+  	setTimeout(function() {
+					//alert();
+					
+		var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+					var url = window.location.href;
+			id=url.split("=")[1];
+			//alert(id);
+			
+			  db.transaction(function  (tx) {
+
+	tx.executeSql('SELECT * FROM Product where id=? AND qantity!=0',   [id], function(tx, results){
+		//alert(id);
+	//	var len  =  results.rows.length;
+		var names=(results.rows.item(0).name);
+		var descriptions=(results.rows.item(0).description);
+		
+			var prices= (results.rows.item(0).price);
+			var images = (results.rows.item(0).image);
+			var qantitys= (results.rows.item(0).qantity);
+			 pid= (results.rows.item(0).id);
+			
+			//alert(names);
+			
+			$("#image").attr("src",images);
+			
+			//Set values in text
+			alert(names);
+			$("#nme").text(names);
+			$("#description").text(descriptions);
+			
+			
+			$("#price").text(prices);
+			$("#qantity").text(qantitys);
+	
+		
+	}, null);
+	});
+	
+	
+
+    }, 2000);
+				};
+				
+			
+			
+$(document).ready(do_on_load);
+$(window).bind('page:change', do_on_load);
+
+$("#cart").click(function() {
+                
+                (localStorage.setItem("id",pid));
+                (localStorage.setItem("pd","y"));
+                alert(id);
+                	window.location.href = "My Cart.html";     
+                });
+                
+		</script>
+		
+	</body>
+	
+
+
+	
+</html>
+

@@ -1,0 +1,160 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+       <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+       <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    </head>
+	
+	<body>
+		<div data-role="page">
+			<div data-role="header">
+				<h1>Dashboard</h1>
+		</div>
+		
+		
+	<div role="main" class="ui-content">
+	<p>
+		  <button id="adminVendor" >Add Vendor</button>
+		  <button id="adminProduct" >Add Product</button>
+          <h3>Welcome to: <var id="name">Name</var></h3>
+    </p>
+    </div>
+		
+	<div data-theme="c" role="main" class="ui-content">
+		<ul id="vendorlist" data-filter="true" data-autodividers="true" data-inset="true" data-role="listview">
+		
+			           </ul>
+	</div>
+		
+	  <div data-theme="a" data-role="footer">
+		<div data-role="navbar">
+			<ul>
+				 <li><a href="AdminDash.html"  data-icon="bars" class="ui-btn-active">Vendor List</a></li>
+				 <li> <a href="My Cart.html" data-icon="shop">My Cart</a></li>
+				 <li><a href="Profile.html" data-icon="user">My Profile</a></li>
+		    </ul>
+		    </div> <!-- /navbar -->
+	    </div>
+	    
+	    
+	
+	
+  <script>
+	
+	var username=(localStorage.getItem("username"));
+	var password=(localStorage.getItem("password"));
+	var names=(localStorage.getItem("name"));
+	
+	
+	
+	 (localStorage.setItem("username", username));
+	 (localStorage.setItem("password", password));
+     (localStorage.setItem("name", names));
+	localStorage.removeItem("pd");
+	
+	if(username=="harsh@admin.com" || username=="malhar@admin.com" )
+	{
+		$("#adminVendor").show();
+		$("#adminProduct").show();
+		$("#name").text(names +" "+"(Admin)");
+	}
+	else
+	{
+		$("#adminVendor").hide();
+		$("#adminProduct").hide();
+		$("#name").text(names);
+	}
+	
+	
+	//alert(names)
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+		db.transaction(function(tx)
+			  {
+			  	tx.executeSql('CREATE TABLE IF NOT EXISTS Vendor(id INTEGER PRIMARY KEY,name unique,address, pincode, phone, image)');
+			  });
+			  
+			  			  db.transaction(function  (tx) {
+tx.executeSql('SELECT * FROM Vendor ',   [], updateVendorList);
+	tx.executeSql('SELECT * FROM Vendor ',   [], function(tx, results){
+		var len  =  results.rows.length;
+	for (i=0; i<len ;i++)
+		{
+			
+	
+			var names=(results.rows.item(i).name);
+			var address=(results.rows.item(i).address);
+			var pincode=(results.rows.item(i).pincode);
+			var phone = (results.rows.item(i).phone);
+			var image = (results.rows.item(i).image);
+			var id = (results.rows.item(i).id);
+
+	
+	
+		};
+		
+	}, null);
+	});
+	
+	function updateVendorList(transaction, results) {
+    //initialise the listitems variable
+    var listitems = "";
+    //get the car list holder ul
+    var listholder = document.getElementById("vendorlist");
+
+    //clear cars list ul
+    listholder.innerHTML = "";
+
+    var i;
+    //Iterate through the results
+    for (i = 0; i < results.rows.length; i++) {
+        //Get the current row
+        var row = results.rows.item(i);
+      //  listholder.innerHTML += "<li>"+  + "  "  + row.name+ " <br> " + row.address+ " <br>" +row.pincode+ " <br>" +row. phone+ " <br>"+" <br> " + " </li> "   ;
+
+    //$("#vendorlist").append($("<li><a href='" + "http://www.desicomments.com/wp-content/uploads/2017/02/Welcome-Image-1.png"+ "'>" + row.address  + "</a></li>"));
+    $("#vendorlist").append($("<li>  <a id='list_"+row.id+"' href='" + "ProductList.html?id="+row.id+"'>"+" <img src="+row.image+">"+"<h3>"+row.name+"<h3>"+ row.address + " <br> " + row.pincode+ "</a> </li>"));
+   // var rowa=row.name;
+  //  (localStorage.setItem("nam", rowa));
+    //var mySelectValue = document.getElementById(w).value;
+
+      // Save the name in localStorage.
+      //localStorage.setItem('mySelectValue', mySelectValue);
+   //   function callMe(row){
+	//localStorage.setItem("nam",row.options[row.name(i)].value);
+	
+//}
+
+}
+
+$('#vendorlist').listview('refresh');
+
+}
+
+			  
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	 $(document).ready(function() {
+             
+                $("#loginID").click(function() {
+                	//alert("ALert");
+                	window.location.href = "Dashboard.html";
+                });
+                 $("#registerID").click(function() {
+                	//alert("ALert");
+                	window.location.href = "Register.html";
+                });
+                $("#adminVendor").click(function() {
+                	//alert("ALert");
+                	window.location.href = "AdminDash.html";
+                });
+                 $("#adminProduct").click(function() {
+                	//alert("ALert");
+                	window.location.href = "AdminProduct.html";
+                });
+
+             });
+	</script>
+</body>
+</html>	

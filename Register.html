@@ -1,0 +1,122 @@
+<html>
+	<head>
+		
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		
+
+	</head>
+	<body>
+
+		<div data-role="page">
+			<div data-role="header">
+				<h1>Register</h1>
+			</div>
+
+			<div     role="main"                  class="ui-content">
+				<input type="text"          id="name"        placeholder="Name"/>
+				<span style="color: red;display: none;" id="spnName">Please Enter Name</span>
+				<input type="email"       id="email"        placeholder="Email Address"/>
+				<span style="color: red;display: none;" id="spnEmail">Please Enter Email</span>
+				<input type="password" id="password" placeholder="Password"/>
+				<span style="color: red;display: none;" id="spnPassword">Password must contains Lowercase,Uppercase, and Number</span>
+				<input type="text"          id="address"    placeholder="Address"/>
+				<span style="color: red;display: none;" id="spnAddress">Please Enter Address</span>
+				<input type="number"    id="phone"      size="10" placeholder="Phone #"/>
+				<span style="color: red;display: none;" id="spnPhone">Please Enter Phone No.</span>
+
+				<button id="registerID" >
+					Register
+				</button>
+				<button id="loginID" >
+					Login
+				</button>
+
+			</div>
+
+			<script>
+
+var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+db.transaction(function(tx)
+{
+tx.executeSql('CREATE TABLE IF NOT EXISTS Register(id INTEGER PRIMARY KEY,name,email unique, password, address, phone)');
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$("#registerID").click(function() {
+
+///////////////////////////////////////////////////////
+name = $("#name").val();
+email = $("#email").val();
+password = $("#password").val();
+address = $("#address").val();
+phone = $("#phone").val();
+
+$("#spnName").hide();
+$("#spnEmail").hide();
+$("#spnPassword").hide();
+$("#spnAddress").hide();
+$("#spnPhone").hide();
+
+//var email = document.getElementById('txtEmail');
+var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+var pass = (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/);
+
+if (name=="")
+{
+$("#spnName").show();
+$("#name").css("background-color","#ffe5e5");
+}
+else if(password==""||!pass.test(password))
+{
+$("#spnPassword").show();
+$("#password").css("background-color","#ffe5e5");
+}
+else if(address=="")
+{
+$("#spnAddress").show();
+$("#address").css("background-color","#ffe5e5");
+}
+
+//email validation
+else if (!filter.test(email)||email=="") {
+
+email.focus;
+$("#email").css("background-color","#ffe5e5");
+return false;
+
+}
+//////////////////
+else if(!phone.match('[0-9]{10}')||phone.length<10||phone.length>10||phone=="")  {
+
+$("#spnPhone").show();
+$("#phone").css("background-color","#ffe5e5");
+return;
+}
+
+////////////////////
+else
+{
+
+db.transaction(function(tx)
+{
+tx.executeSql('INSERT INTO Register(name,email,password,address,phone) VALUES(?,?,?,?,?)',[name,email,password,address,phone]);
+//
+});
+alert("Register Success !!");
+}
+//////////////////////////////////////////////////////
+});
+
+/////////////////////////////////////////////////////////
+
+$("#loginID").click(function() {
+//alert("ALert");
+window.location.href = "Login.html";
+});
+
+			</script>
+	</body>
+</html>

@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+       <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+       <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    </head>
+	
+	<body>
+		<div data-role="page">
+			<div data-role="header">
+				<h1>Dashboard</h1>
+		</div>
+		
+		
+	 <div     role="main"   class="ui-content">
+		<input type="text"         id="names"      placeholder="Name"/>
+		<input type="email"      id="addresss"  placeholder="Address"/>
+		<input type="text"        id="codes"         placeholder="Pincode"/>
+		<input type="text"        id="phones"      placeholder="Phone"/>
+		<input type="text"        id="images"      placeholder="Image"/>
+		
+	
+		
+	
+	
+	
+	<h1>Hours</h1>
+		MON<input type="text" id="mon" placeholder="Hours"/>
+		TUE<input type="text" id="tue" placeholder="Hours"/>
+		WED<input type="text" id="wed" placeholder="Hours"/>
+		THURSDAY<input type="text" id="thurs" placeholder="Hours"/>
+		FRI<input type="text" id="fri" placeholder="Hours"/>
+		SAT<input type="text" id="sat" placeholder="Hours"/>
+		SUN<input type="text" id="sund" placeholder="Hours"/>
+	
+		<button id="saveID" >Save</button> 
+	    
+	 <script>
+	
+    var v_id;
+	
+	 $(document).ready(function() {
+             
+                $("#saveID").click(function() {
+                	////////////////////////////////////////////////////////////////
+                
+				var names=document.getElementById("names").value;
+				var addresses=document.getElementById("addresss").value;
+				var codes=document.getElementById("codes").value;
+				var phones=document.getElementById("phones").value;
+				var images=document.getElementById("images").value;
+				
+				var m_h=document.getElementById("mon").value;
+				var t_h=document.getElementById("tue").value;
+				var w_h=document.getElementById("wed").value;
+				var th_h=document.getElementById("thurs").value;
+				var f_h=document.getElementById("fri").value;
+				var s_h=document.getElementById("sat").value;
+				var su_h=document.getElementById("sund").value;
+                	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+		db.transaction(function(tx)
+			  {
+			  	tx.executeSql('CREATE TABLE IF NOT EXISTS Vendor(id INTEGER PRIMARY KEY,name unique,address, pincode, phone, image)');
+			    tx.executeSql('CREATE TABLE IF NOT EXISTS TIME(id INTEGER PRIMARY KEY,m_h,t_h,w_h,th_h,f_h,s_h,su_h,v_id)');
+			  });
+		 //debugger;    //insert into vendor
+			             db.transaction(function(tx)
+						  {
+						  	tx.executeSql('INSERT INTO Vendor(name,address,pincode,phone,image) VALUES(?,?,?,?,?)',[names,addresses,codes,phones,images]);
+						  });
+						  
+						  //select from vendor vendor id
+		                 db.transaction(function  (tx) {
+                        
+	                     tx.executeSql('SELECT * FROM Vendor where phone = ?   '
+							,   [phones], function(tx, results){
+							var len  =  results.rows.length;
+						///	for (i=0; i<len ;i++)
+						//	{
+
+							  v_id = (results.rows.item(0).id);
+
+						//	};
+
+							}, null);
+							});
+
+					      //insert into time with vendor id
+						   db.transaction(function(tx)
+						  {
+						  	tx.executeSql('INSERT INTO TIME(m_h,t_h,w_h,th_h,f_h,s_h,su_h,v_id) VALUES(?,?,?,?,?,?,?,?)',[m_h,t_h,w_h,th_h,f_h,s_h,su_h,v_id]);
+						  });
+	/////////
+			  
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                });
+                });
+            
+            function popup(){
+         $("#p").popup("open"); 
+        setTimeout(function(){  $("#p").popup("close"); }, 5000);
+            }
+            
+            
+	</script>
+</body>
+</html>	

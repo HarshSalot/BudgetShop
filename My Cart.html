@@ -1,0 +1,138 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	</head>
+	<body>
+
+		<div data-role="page">
+			<div data-role="header">
+				<h1>My Cart</h1>
+			</div>
+	<button id="cartAllDelete">Clear All Cart</button>
+			<div data-theme="c" role="main" class="ui-content">
+				<ul id="cartlist" data-filter="true" data-autodividers="true" data-inset="true" data-role="listview">
+
+				</ul>
+			</div>
+
+			<script>
+				var p_id = (localStorage.getItem("id"));
+				var a = (localStorage.getItem("pd"));
+				alert(a);
+
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				var db = openDatabase('Ecommerce', '1.0', 'TestDB', 2 * 1024 * 1024);
+				db.transaction(function(tx) {
+					tx.executeSql('CREATE TABLE IF NOT EXISTS MyCart(id INTEGER PRIMARY KEY,p_id)');
+				});
+
+				if (a == "y") {
+
+					/////////////////////////////////////////////////////////////////////////////////
+					db.transaction(function(tx) {
+						tx.executeSql('INSERT INTO MyCart(p_id) VALUES(?)', [p_id]);
+
+					});
+					alert("Product Added To Cart !!");
+
+					/////////////////////////////////////////////////////////////////////////////////
+					db.transaction(function(tx) {
+						tx.executeSql('Update Product set qantity = qantity-1 where id=(?)', [p_id]);
+
+					});
+
+					//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+				
+				
+					//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+					localStorage.removeItem("pd");
+
+				} else {
+
+					//////////////////////////////////////////////////////////////////////////////////////////////////////
+			      
+
+					//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+				}
+
+				{
+
+					///////////////////////////////////////////////////////////////////////////////////////////
+					function updateVendorList(transaction, results) {
+						//initialise the listitems variable
+						var listitems = "";
+						//get the car list holder ul
+						var listholder = document.getElementById("cartlist");
+
+						//clear cars list ul
+						listholder.innerHTML = "";
+
+						var i;
+						//Iterate through the results
+						for ( i = 0; i < results.rows.length; i++) {
+							//Get the current row
+							var row = results.rows.item(i);
+
+							//$("#vendorlist").append($("<li><a href='" + "http://www.desicomments.com/wp-content/uploads/2017/02/Welcome-Image-1.png"+ "'>" + row.address  + "</a></li>"));
+							// $("#cartlist").append($("<li>  <a id='list_"+row.id+"' href='" + "ProductList.html?id="+row.id+"'>"+" <img src="+row.image+">"+"<h3>"+row.name+"<h3>"+ row.category + " <br> " + row.description+ "<br>"+row.qantity+ " <br> " +row.price+ "</a>  <a id='list_"+row.id+"' href='" + "ProductList.html?id="+row.id+"'>Show Details</a></li>"));
+							$("#cartlist").append($("<li>  <a id='list_" + row.id + "' href='" + "ProductList.html?id=" + row.id + "'>" + " <img src=" + row.image + ">" + "<h3>" + row.name + "<h3>" + row.category + " <br> " +
+															 row.description + "<br>" + row.qantity + " <br> " + row.price + "</a> " +
+															  " <a id='list_" + row.id + "'>"+"<button id=btn_" + row.id + " type=\"button\" onclick=\"cartDelete('" + row.id + "')\">Delete</button></a></li>"));
+															// " <a id='list_" + row.id + "'>"+"<button id=btn_" + row.id + " type=\"button\" onclick=\"cartDelete(\"" + row.id + "\");\">Delete</button></a></li>"));
+
+							//id='list_"+row.id+"' href='" + "ProductList.html?id="+row.id+"'>Show Details
+             
+						}
+
+						
+
+
+						$('#cartlist').listview('refresh');
+
+					}
+
+					/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                 
+				}
+				
+		
+function cartDelete(c_id){
+	
+	alert(c_id);
+	/////////////////////////////////////////////////////////////////////////////////
+					db.transaction(function(tx) {
+						tx.executeSql('DELETE FROM MyCart where id= (?)', [c_id]);
+						tx.executeSql('Update Product set qantity = qantity+1 where id=(?)', [p_id]);
+
+					});
+					alert("Product Deleted From Cart !!");
+
+					////////////////////////////////////////////////////////////////////////////////
+					/////////////////////////////////////////////////////////////////////////////////
+				
+              
+					/////////////////////////////////////////////////////////////////////////////////
+					////////////////////////////////////////////////////////////////////////////////
+	
+}
+
+$(document).ready(function() {
+$("#cartAllDelete").click(function() {
+      
+                	db.transaction(function(tx) {
+						tx.executeSql('TRUNCATE TABLE  MyCart', []);
+
+					});
+					 cartDisplay();
+                });
+
+             });
+
+			</script>
+	</body>
+</html>

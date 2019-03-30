@@ -1,0 +1,145 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+       <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+       <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    </head>
+	
+	<body>
+		<div data-role="page">
+			<div data-role="header">
+				<h1>Dashboard</h1>
+		</div>
+		
+		<div class="ui-field-contain">
+    <label for="select-native-1">Vendor Name:</label>
+    <select name="select-native-1" id="select-native-1">
+       
+    </select>
+    </div>
+		
+		
+	 <div     role="main"   class="ui-content">
+		<input type="text"         id="name"      placeholder="Product Name"/>
+		<input type="text"      id="category"  placeholder="Category"/>
+		<input type="text"        id="description"         placeholder="Description"/>
+		<input type="text"        id="price"      placeholder="Price"/>
+		<input type="text"        id="images"      placeholder="Image Path"/>
+		<input type="text"        id="qantity"      placeholder="qantity"/>
+		
+		
+		<button id="saveID" >Save</button>
+	
+	</div>
+	
+	  <div data-theme="a" data-role="footer">
+		<div data-role="navbar">
+			<ul>
+				 <li><a href="Page3.html"  data-icon="bars" class="ui-btn-active">Vendor List</a></li>
+				 <li><a href="My Cart.html" data-icon="shop">My Cart</a></li>
+				 <li><a href="Profile.html" data-icon="user">My Profile</a></li>
+		    </ul>
+		    </div> <!-- /navbar -->
+	    </div>
+	    
+	 <script>
+	
+     		 /////////////////////////////////////////////////////////////////////////////////////////////////////
+		 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+		db.transaction(function(tx)
+			  {
+			  	tx.executeSql('CREATE TABLE IF NOT EXISTS Vendor(id INTEGER PRIMARY KEY,name unique,address, pincode, phone, image)');
+			  });
+			  
+			  			  db.transaction(function  (tx) {
+tx.executeSql('SELECT * FROM Vendor ',   [], updateVendorList);
+	tx.executeSql('SELECT * FROM Vendor ',   [], function(tx, results){
+		var len  =  results.rows.length;
+	for (i=0; i<len ;i++)
+		{
+			
+	
+			var names=(results.rows.item(i).name);
+			var address=(results.rows.item(i).address);
+			var pincode=(results.rows.item(i).pincode);
+			var phone = (results.rows.item(i).phone);
+			var image = (results.rows.item(i).image);
+			var id = (results.rows.item(i).id);
+
+	
+	
+		};
+		
+	}, null);
+	});
+	
+	function updateVendorList(transaction, results) {
+    //initialise the listitems variable
+    var listitems = "";
+    //get the car list holder ul
+    var listholder = document.getElementById("select-native-1");
+
+    //clear cars list ul
+    listholder.innerHTML = "";
+
+    var i;
+    //Iterate through the results
+    for (i = 0; i < results.rows.length; i++) {
+        //Get the current row
+        var row = results.rows.item(i);
+      //  listholder.innerHTML += "<li>"+  + "  "  + row.name+ " <br> " + row.address+ " <br>" +row.pincode+ " <br>" +row. phone+ " <br>"+" <br> " + " </li> "   ;
+
+   	 $('#select-native-1').append( '<option value="'+row.id+'">'+row.name+'</option>' );
+
+}
+
+$('#select-native-1').selectmenu('refresh');
+
+}
+
+			  
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		 ///////////////////////////////////////////////////////////////////////////////////////////////////////
+		 
+
+	
+	
+	
+	 $(document).ready(function() {
+             
+                $("#saveID").click(function() {
+                	
+                //	var select = $('#select-native-1 :selected').text();
+                var select = $("select-native-1:selected", this);
+                var select = this.value;
+                	alert(select);
+               
+                	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	var db=openDatabase('Ecommerce','1.0','TestDB',2*1024*1024);
+		db.transaction(function(tx)
+			  {
+			  	tx.executeSql('CREATE TABLE IF NOT EXISTS Product(id INTEGER PRIMARY KEY,name,category, description, price, image, qantity,v_id )');
+			  });
+		
+			  db.transaction(function(tx)
+						  {
+						  	tx.executeSql('INSERT INTO Product(name,category, description, price, image, qantity,v_id) VALUES(?,?,?,?,?,?,?)',["Milk","Food"," Fresh Milk",4.5,"./image/milk.jpg",20,'6']);
+						  });
+		
+		 
+	
+			  
+		
+	    
+     
+			  
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                });
+                });
+            
+            
+	</script>
+</body>
+</html>	
