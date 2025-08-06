@@ -1,2 +1,2 @@
-# BudgetShop College Project
-Budget shop is a Demo of an E-commerce mobile platform web application build using mobile jquery and SQL Lite Database
+# BudgetShop:
+BudgetShop is a demo e-commerce mobile web application built using jQuery Mobile and SQLite. Developed as a college project, it showcases the core features of a shopping platform, including product listing, cart functionality, and basic database operations, for a lightweight user experience.
